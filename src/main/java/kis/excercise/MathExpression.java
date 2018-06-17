@@ -119,7 +119,7 @@ public class MathExpression {
     }
 
     private void checkFollow(List<Character> follow) throws IncorrectInputException {
-        if (follow.contains(EMPTY_SIGN) || follow.isEmpty()) return;
+        if (follow.contains(EMPTY_SIGN) || (follow.isEmpty() && getCurrentChar() == EMPTY_SIGN)) return;
         if (!follow.contains(getCurrentChar())) {
             throw new IncorrectInputException("Expected: " + printList(follow) + " at " + currentPosition);
         }
