@@ -1,6 +1,5 @@
 package kis.excercise;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,41 +22,47 @@ public class MathExpression {
     }
 
     private void root() throws IncorrectInputException {
+        checkInPlace(Producation.root.first);
         expression();
         checkFor(';');
         expressions();
-        checkFollow(Producation.root.follow);
+        checkInPlace(Producation.root.follow);
     }
 
     private void expressions() throws IncorrectInputException {
+        checkInPlace(Producation.expressions.first);
         if (Producation.expression.first.contains(getCurrentChar())) {
             expression();
             checkFor(';');
             expressions();
         }
-        checkFollow(Producation.expressions.follow);
+        checkInPlace(Producation.expressions.follow);
     }
 
     private void expression() throws IncorrectInputException {
+        checkInPlace(Producation.expression.first);
         operand();
         experssionP();
-        checkFollow(Producation.expression.follow);
+        checkInPlace(Producation.expression.follow);
     }
 
     private void experssionP() throws IncorrectInputException {
+        checkInPlace(Producation.expressionP.first);
         if (Producation.operators.first.contains(getCurrentChar())) {
             operators();
             expression();
         }
-        checkFollow(Producation.expressionP.follow);
+        checkInPlace(Producation.expressionP.follow);
     }
 
     private void operators() throws IncorrectInputException {
+        checkInPlace(Producation.operators.first);
         checkForOneOf(Producation.operators.first);
-        checkFollow(Producation.operators.follow);
+        checkInPlace(Producation.operators.follow);
     }
 
     private void operand() throws IncorrectInputException {
+        checkInPlace(Producation.operand.first);
         if (Producation.number.first.contains(getCurrentChar())) {
             number();
         } else if(getCurrentChar() == '(') {
@@ -65,39 +70,44 @@ public class MathExpression {
             expression();
             checkFor(')');
         }
-        checkFollow(Producation.operand.follow);
+        checkInPlace(Producation.operand.follow);
     }
 
     private void number() throws IncorrectInputException {
+        checkInPlace(Producation.number.first);
         digitString();
         numberP();
-        checkFollow(Producation.number.follow);
+        checkInPlace(Producation.number.follow);
     }
 
     private void numberP() throws IncorrectInputException {
+        checkInPlace(Producation.numberP.first);
         if (getCurrentChar() == '.') {
             checkFor('.');
             digitString();
         }
-        checkFollow(Producation.numberP.follow);
+        checkInPlace(Producation.numberP.follow);
     }
 
     private void digitString() throws IncorrectInputException {
+        checkInPlace(Producation.digitString.first);
         digit();
         digitStringP();
-        checkFollow(Producation.digitString.follow);
+        checkInPlace(Producation.digitString.follow);
     }
 
     private void digit() throws IncorrectInputException {
+        checkInPlace(Producation.digits.first);
         checkForOneOf(Producation.digits.first);
-        checkFollow(Producation.digits.follow);
+        checkInPlace(Producation.digits.follow);
     }
 
     private void digitStringP() throws IncorrectInputException {
+        checkInPlace(Producation.digitStringP.first);
         if (Producation.digitString.first.contains(getCurrentChar())) {
             digitString();
         }
-        checkFollow(Producation.digitStringP.follow);
+        checkInPlace(Producation.digitStringP.follow);
     }
 
     private void checkFor(char c) throws IncorrectInputException {
@@ -118,7 +128,7 @@ public class MathExpression {
         return currentPosition <= maxPosition ? input.charAt(currentPosition) : EMPTY_SIGN;
     }
 
-    private void checkFollow(List<Character> follow) throws IncorrectInputException {
+    private void checkInPlace(List<Character> follow) throws IncorrectInputException {
         if (follow.contains(EMPTY_SIGN) || (follow.isEmpty() && getCurrentChar() == EMPTY_SIGN)) return;
         if (!follow.contains(getCurrentChar())) {
             throw new IncorrectInputException("Expected: " + printList(follow) + " at " + currentPosition);
